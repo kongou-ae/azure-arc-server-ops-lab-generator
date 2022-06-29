@@ -29,7 +29,7 @@ module vnet 'modules/vnet.bicep' = {
 }
 
 module vm 'modules/vm.bicep' = {
-  name: 'DeployAmaVmAndMmaVm'
+  name: 'DeployArcHostVm'
   scope: rgVm
   params: {
     vmLocation: envLocation
@@ -40,11 +40,3 @@ module vm 'modules/vm.bicep' = {
   }
 }
 
-module runCommand 'modules/runcommand.bicep' = {
-  name: 'RunCommand'
-  scope: rgVm
-  params: {
-    vmLocation: envLocation
-    suffix: suffix
-  }
-}

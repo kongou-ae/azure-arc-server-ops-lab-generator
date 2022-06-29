@@ -7,7 +7,7 @@ param numberOfVms int = 1
 param suffix string
 
 resource pipVm 'Microsoft.Network/publicIPAddresses@2021-08-01' = {
-  name: 'pip-${suffix}'
+  name: 'pip${suffix}'
   location: vmLocation
   sku: {
     name: 'Standard'
@@ -33,7 +33,7 @@ resource nicForVm 'Microsoft.Network/networkInterfaces@2021-08-01' = [for i in r
             id: '${vnetId}/subnets/iaasSubnet'
           }
           publicIPAddress: {
-             id: pipVm.id
+            id: pipVm.id
           }
         }
       }
@@ -41,7 +41,23 @@ resource nicForVm 'Microsoft.Network/networkInterfaces@2021-08-01' = [for i in r
   }
 }]
 
-resource amaUbVm01 'Microsoft.Compute/virtualMachines@2021-11-01' = {
+resource dataDisk 'Microsoft.Compute/disks@2022-03-02' = {
+  name: 'disk${suffix}-data01'
+  location: vmLocation
+  sku: {
+    name: 'StandardSSD_LRS'
+  }
+  properties: {
+    diskSizeGB: 64
+    creationData: {
+      createOption: 'Empty'
+
+    }
+  }
+
+}
+
+resource archost01 'Microsoft.Compute/virtualMachines@2021-11-01' = {
   name: 'vm${suffix}-archost01'
   location: vmLocation
   identity: {
@@ -71,10 +87,12 @@ resource amaUbVm01 'Microsoft.Compute/virtualMachines@2021-11-01' = {
       }
       dataDisks: [
         {
-          diskSizeGB: 64
           lun: 0
-          createOption: 'Empty'
           caching: 'ReadOnly'
+          createOption: 'Attach'
+          managedDisk: {
+             id: dataDisk.id
+          }
         }
       ]
       imageReference: {
@@ -95,4 +113,26 @@ resource amaUbVm01 'Microsoft.Compute/virtualMachines@2021-11-01' = {
       ]
     }
   }
+}
+
+resource mountDisk 'Microsoft.Compute/virtualMachines/runCommands@2022-03-01' = {
+  name: 'mountDisk'
+  parent: archost01
+  location: vmLocation
+   properties: {
+      source: {
+        scriptUri: 'https://raw.githubusercontent.com/kongou-ae/azure-arc-server-ops-lab-generator/dev/scriptps/mountDisk.ps1'
+      }
+   }
+}
+
+resource configureHostVm 'Microsoft.Compute/virtualMachines/runCommands@2022-03-01' = {
+  name: 'configureHostVm'
+  parent: archost01
+  location: vmLocation
+   properties: {
+      source: {
+        scriptUri: 'https://raw.githubusercontent.com/kongou-ae/azure-arc-server-ops-lab-generator/dev/scriptps/configureHostVm.ps1'
+      }
+   }
 }
