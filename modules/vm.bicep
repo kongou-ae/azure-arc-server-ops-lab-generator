@@ -75,7 +75,7 @@ resource archost01 'Microsoft.Compute/virtualMachines@2021-11-01' = {
       }
     }
     hardwareProfile: {
-      vmSize: 'Standard_B2ms'
+      vmSize: 'Standard_D2_v4'
     }
     storageProfile: {
       osDisk: {
@@ -129,10 +129,14 @@ resource mountDisk 'Microsoft.Compute/virtualMachines/runCommands@2022-03-01' = 
 resource configureHostVm 'Microsoft.Compute/virtualMachines/runCommands@2022-03-01' = {
   name: 'configureHostVm'
   parent: archost01
+  dependsOn: [
+    mountDisk
+  ]
   location: vmLocation
    properties: {
       source: {
         scriptUri: 'https://raw.githubusercontent.com/kongou-ae/azure-arc-server-ops-lab-generator/dev/scriptps/configureHostVm.ps1'
       }
+      timeoutInSeconds: 300
    }
 }
