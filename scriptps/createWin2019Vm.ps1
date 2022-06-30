@@ -1,6 +1,6 @@
 Param( 
     [parameter(mandatory=$true)][string]$name, 
-    [parameter(mandatory=$true)][securestring]$LocalAdministratorPassword
+    [parameter(mandatory=$true)][string]$LocalAdministratorPassword
 )
 
 $ErrorActionPreference = "stop"
