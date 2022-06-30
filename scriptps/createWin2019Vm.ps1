@@ -29,10 +29,10 @@ if ( $null -eq $result){
 
     Import-module "G:\arcsvlab-eval\Convert-WindowsImage.ps1"
 
-    $LocalAdministratorPassword = ConvertTo-SecureString -AsPlainText $LocalAdministratorPassword -Force
+    $secureLocalAdministratorPassword = ConvertTo-SecureString -AsPlainText $LocalAdministratorPassword -Force
 
     New-BasicUnattendXML -ComputerName $name `
-        -LocalAdministratorPassword $LocalAdministratorPassword `
+        -LocalAdministratorPassword $secureLocalAdministratorPassword `
         -AutoLogonCount 1 -OutputPath "G:\arcsvlab-eval\" -Force `
         -ErrorAction Stop
         
