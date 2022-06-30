@@ -51,7 +51,7 @@ resource bootDiagStorage 'Microsoft.Storage/storageAccounts@2021-09-01' = {
 }
 
 resource dataDisk 'Microsoft.Compute/disks@2022-03-02' = {
-  name: 'disk${suffix}-data01'
+  name: 'vm${suffix}-archost01-data01'
   location: vmLocation
   sku: {
     name: 'Premium_LRS'
@@ -180,15 +180,6 @@ resource createWin2019Vm 'Microsoft.Compute/virtualMachines/runCommands@2022-03-
         name: 'name'
         value: archost01.properties.osProfile.computerName
       }
-      {
-        name: 'location'
-        value: vmLocation
-      }
-      {
-        name: 'resouceGroup'
-        value: resourceGroup().name
-      }
-
     ]
     protectedParameters: [
       {
