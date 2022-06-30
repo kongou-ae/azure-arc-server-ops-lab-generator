@@ -20,7 +20,7 @@ Start-Transcript -Path 'c:\arcsvlab-eval\002-configureHostVm.log'
 Write-Host "Installing features"
 
 $hyperV = Get-WindowsFeature -Name Hyper-V
-if($null -eq $hyperV){
+if($true -eq $hyperV.Installed){
     Install-WindowsFeature -Name DNS -IncludeManagementTools
     Install-WindowsFeature -Name DHCP -IncludeManagementTools
     Install-WindowsFeature -Name Hyper-V -IncludeAllSubFeature -IncludeManagementTools -Restart
@@ -41,5 +41,6 @@ Set-DhcpServerv4OptionValue -DnsServer 10.0.0.254
 Write-Output "Setting DNS"
 
 Add-DnsServerForwarder -IPAddress 168.63.129.16
+
 
 Stop-Transcript
