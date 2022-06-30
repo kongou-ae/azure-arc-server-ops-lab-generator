@@ -146,6 +146,8 @@ resource mountDisk 'Microsoft.Compute/virtualMachines/runCommands@2022-03-01' = 
     source: {
       scriptUri: 'https://raw.githubusercontent.com/kongou-ae/azure-arc-server-ops-lab-generator/dev/scriptps/mountDisk.ps1'
     }
+    outputBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/mountDisk/output.txt'
+    errorBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/mountDisk/error.txt'
   }
 }
 
@@ -160,6 +162,8 @@ resource configureHostVm 'Microsoft.Compute/virtualMachines/runCommands@2022-03-
     source: {
       scriptUri: 'https://raw.githubusercontent.com/kongou-ae/azure-arc-server-ops-lab-generator/dev/scriptps/configureHostVm.ps1'
     }
+    outputBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/configureHostVm/output.txt'
+    errorBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/configureHostVm/error.txt'
     timeoutInSeconds: 600
   }
 }
@@ -175,6 +179,8 @@ resource settingFeaturesHostVm 'Microsoft.Compute/virtualMachines/runCommands@20
     source: {
       scriptUri: 'https://raw.githubusercontent.com/kongou-ae/azure-arc-server-ops-lab-generator/dev/scriptps/settingFeaturesHostVm.ps1'
     }
+    outputBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/settingFeaturesHostVm/output.txt'
+    errorBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/settingFeaturesHostVm/error.txt'
     timeoutInSeconds: 600
   }
 }
@@ -202,6 +208,8 @@ resource createWin2019Vm 'Microsoft.Compute/virtualMachines/runCommands@2022-03-
         value: adminPassword
       }
     ]
+    outputBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/createWin2019Vm/output.txt'
+    errorBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/createWin2019Vm/error.txt'
     timeoutInSeconds: 3600
   }
 }
@@ -232,6 +240,8 @@ resource enableArcServerToVm 'Microsoft.Compute/virtualMachines/runCommands@2022
       }
 
     ]
+    outputBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/enableArcServerToVm/output.txt'
+    errorBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/enableArcServerToVm/error.txt'
     protectedParameters: [
       {
         name: 'LocalAdministratorPassword'

@@ -1,5 +1,3 @@
-$ErrorActionPreference = "stop"
-
 Param( 
     [parameter(mandatory=$true)][string]$name, 
     [parameter(mandatory=$true)][securestring]$LocalAdministratorPassword,
@@ -7,6 +5,8 @@ Param(
     [parameter(mandatory=$true)][string]$resourceGroup
 
 )
+
+$ErrorActionPreference = "stop"
 
 Start-Transcript -Path 'c:\arcsvlab-eval\enableArcServerToVm.log'
 

@@ -1,9 +1,9 @@
-$ErrorActionPreference = "stop"
-
 Param( 
     [parameter(mandatory=$true)][string]$name, 
     [parameter(mandatory=$true)][securestring]$LocalAdministratorPassword
 )
+
+$ErrorActionPreference = "stop"
 
 Start-Transcript -Path 'c:\arcsvlab-eval\createWin2019Vm.log'
 
