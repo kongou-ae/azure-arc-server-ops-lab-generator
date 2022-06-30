@@ -52,6 +52,22 @@ resource bootDiagStorage 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   }
 }
 
+resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2021-09-01' = {
+  parent: bootDiagStorage
+  name: 'default'
+  properties: {
+
+  }
+}
+
+resource blobContainerForRuncommand 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-09-01' = {
+  parent: blobService
+  name: 'run'
+  properties: {
+    publicAccess: 'None'
+  }
+}
+
 resource dataDisk 'Microsoft.Compute/disks@2022-03-02' = {
   name: 'vm${suffix}-archost01-data01'
   location: vmLocation

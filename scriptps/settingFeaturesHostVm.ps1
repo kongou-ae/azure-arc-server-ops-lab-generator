@@ -13,7 +13,7 @@ if ( $null -eq $result) {
 
     Add-DhcpServerv4Scope -name "internal" -StartRange 10.0.0.100 -EndRange 10.0.0.200 -SubnetMask 255.255.255.0 -State Active
     Set-DhcpServerv4OptionValue -OptionID 3 -Value 10.0.0.254 -ScopeID 10.0.0.0 
-    Set-DhcpServerv4OptionValue -DnsServer 10.0.0.254
+    Set-DhcpServerv4OptionValue -DnsServer 10.0.0.254 -ScopeID 10.0.0.0 
 
     Write-Output "Setting DNS"
 
