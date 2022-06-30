@@ -165,11 +165,26 @@ resource configureHostVm 'Microsoft.Compute/virtualMachines/runCommands@2022-03-
   }
 }
 
+resource settingFeaturesHostVm 'Microsoft.Compute/virtualMachines/runCommands@2022-03-01' = {
+  name: 'settingFeaturesHostVm'
+  parent: archost01
+  dependsOn: [
+    configureHostVm
+  ]
+  location: vmLocation
+  properties: {
+    source: {
+      scriptUri: 'https://raw.githubusercontent.com/kongou-ae/azure-arc-server-ops-lab-generator/dev/scriptps/settingFeaturesHostVm.ps1'
+    }
+    timeoutInSeconds: 600
+  }
+}
+
 resource createWin2019Vm 'Microsoft.Compute/virtualMachines/runCommands@2022-03-01' = {
   name: 'createWin2019Vm'
   parent: archost01
   dependsOn: [
-    configureHostVm
+    settingFeaturesHostVm
   ]
   location: vmLocation
   properties: {
