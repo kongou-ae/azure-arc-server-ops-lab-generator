@@ -6,7 +6,7 @@ resource routetable 'Microsoft.Network/routeTables@2021-08-01' = {
   location: netLocation
   properties: {
     routes: [
-    ] 
+    ]
   }
 }
 
@@ -15,11 +15,22 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2021-08-01' = {
   location: netLocation
   properties: {
     securityRules: [
+      {
+        name: 'all'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          protocol: 'Tcp'
+          destinationAddressPrefix: '*'
+          destinationPortRange: '3389'
+          priority: 100
+          sourcePortRange: '*'
+          sourceAddressPrefix: '*'
+        }
+      }
     ]
   }
 }
-
-
 
 resource vnet 'Microsoft.Network/virtualNetworks@2021-08-01' = {
   name: 'net${suffix}'
@@ -48,10 +59,10 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-08-01' = {
         properties: {
           addressPrefix: '192.168.4.0/24'
           routeTable: {
-             id: routetable.id
+            id: routetable.id
           }
           networkSecurityGroup: {
-             id: nsg.id
+            id: nsg.id
           }
         }
       }
