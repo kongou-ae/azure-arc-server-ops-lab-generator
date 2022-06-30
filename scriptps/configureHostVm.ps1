@@ -1,7 +1,7 @@
 # Ref: https://github.com/microsoft/azure_arc/blob/main/azure_jumpstart_arcbox/artifacts/Bootstrap.ps1
 
 $ErrorActionPreference = "stop"
-New-Item 'c:\arcsvlab-eval' -ItemType Directory
+
 
 # Installing tools
 $chocolateyAppList = 'azure-cli,az.powershell,microsoft-edge,azcopy10,vscode,git,7zip'
