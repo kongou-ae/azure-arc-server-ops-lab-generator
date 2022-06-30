@@ -16,6 +16,7 @@ $Cred = New-Object System.Management.Automation.PSCredential("administrator",$Lo
 $pssession = New-PSSession 10.0.0.100 -Credential $cred
 
 Install-module Az.ConnectedMachine -Force
+Login-AzAccount -Identity
 Connect-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $name -Location $location -PSSession $pssession
 
 Stop-Transcript
