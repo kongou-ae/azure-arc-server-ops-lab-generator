@@ -250,7 +250,7 @@ resource enableArcServerToVm 'Microsoft.Compute/virtualMachines/runCommands@2022
         value: adminPassword
       }
     ]
-     runAsUser: adminUserName
+     runAsUser: 'administrator'
      runAsPassword: adminPassword
     timeoutInSeconds: 300
   }

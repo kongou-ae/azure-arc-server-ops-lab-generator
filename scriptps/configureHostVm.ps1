@@ -10,7 +10,7 @@ $appsToInstall = $chocolateyAppList -split "," | ForEach-Object { "$($_.Trim())"
 foreach ($app in $appsToInstall)
 {
     Write-Host "Installing $app"
-    & choco install $app /y -Force | Write-Output
+    & choco install $app /y -Force
 }
 
 Write-Host "Installing features"
