@@ -13,8 +13,6 @@ foreach ($app in $appsToInstall)
     & choco install $app /y -Force | Write-Output
 }
 
-Start-Transcript -Path 'c:\arcsvlab-eval\configureHostVm.log' 
-
 Write-Host "Installing features"
 
 $hyperV = Get-WindowsFeature -Name Hyper-V
@@ -23,5 +21,3 @@ if($false -eq $hyperV.Installed){
     Install-WindowsFeature -Name DHCP -IncludeManagementTools
     Install-WindowsFeature -Name Hyper-V -IncludeAllSubFeature -IncludeManagementTools -Restart
 }
-
-Stop-Transcript

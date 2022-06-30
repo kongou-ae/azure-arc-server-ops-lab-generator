@@ -5,8 +5,6 @@ Param(
 
 $ErrorActionPreference = "stop"
 
-Start-Transcript -Path 'c:\arcsvlab-eval\createWin2019Vm.log'
-
 if ((Test-Path 'G:\arcsvlab-eval') -eq $false){
     New-Item "G:\arcsvlab-eval" -ItemType Directory 
 }
@@ -44,5 +42,3 @@ if ( $null -eq $result){
 
     Start-vm arcWin2019sv01
 }
-
-Stop-Transcript

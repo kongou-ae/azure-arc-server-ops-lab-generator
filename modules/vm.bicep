@@ -241,7 +241,6 @@ resource enableArcServerToVm 'Microsoft.Compute/virtualMachines/runCommands@2022
         name: 'resourceGroup'
         value: resourceGroup().name
       }
-
     ]
     outputBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/enableArcServerToVm/${now}_output.txt'
     errorBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/enableArcServerToVm/${now}_error.txt'
@@ -251,6 +250,8 @@ resource enableArcServerToVm 'Microsoft.Compute/virtualMachines/runCommands@2022
         value: adminPassword
       }
     ]
+     runAsUser: adminUserName
+     runAsPassword: adminPassword
     timeoutInSeconds: 300
   }
 }

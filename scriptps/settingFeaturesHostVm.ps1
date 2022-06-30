@@ -2,9 +2,6 @@
 
 $ErrorActionPreference = "stop"
 
-Start-Transcript -Path 'c:\arcsvlab-eval\settingFeaturesHostVm.log' 
-
-
 $result = Get-VMSwitch "InternalNAT" -ErrorAction Ignore
 
 if ( $null -eq $result){
@@ -22,4 +19,3 @@ if ( $null -eq $result){
 
     Add-DnsServerForwarder -IPAddress 168.63.129.16
 }
-Stop-Transcript

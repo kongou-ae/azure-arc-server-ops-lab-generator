@@ -7,9 +7,7 @@ Param(
 
 $ErrorActionPreference = "stop"
 
-Start-Transcript -Path 'c:\arcsvlab-eval\enableArcServerToVm.log'
-
-Set-Item WSMan:\localhost\Client\TrustedHosts -Value "10.0.0.100"  -Force
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value "10.0.0.100" -Force
 
 $result = Get-VM -Name arcWin2019sv01 -ErrorAction Ignore
 if ( $null -ne $result){
@@ -21,4 +19,3 @@ if ( $null -ne $result){
     Login-AzAccount -Identity
     Connect-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $name -Location $location -PSSession $pssession
 }
-Stop-Transcript
