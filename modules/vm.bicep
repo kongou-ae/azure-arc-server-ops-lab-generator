@@ -134,7 +134,7 @@ resource ownerRole 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' 
     principalType: 'ServicePrincipal'
     principalId: archost01.identity.principalId
     roleDefinitionId: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635'
-    
+
   }
 }
 
@@ -190,8 +190,6 @@ resource createWin2019Vm 'Microsoft.Compute/virtualMachines/runCommands@2022-03-
     timeoutInSeconds: 3600
   }
 }
-
-
 
 resource enableArcServerToVm 'Microsoft.Compute/virtualMachines/runCommands@2022-03-01' = {
   name: 'enableArcServerToVm'
