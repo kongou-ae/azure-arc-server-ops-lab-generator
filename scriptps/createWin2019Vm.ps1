@@ -14,8 +14,10 @@ if ((Test-Path 'G:\arcsvlab-eval') -eq $false){
 $result = Get-VM -Name arcWin2019sv01 -ErrorAction Ignore
 if ( $null -eq $result){
 
-    Start-BitsTransfer -Source "https://software-static.download.prss.microsoft.com/pr/download/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso" `
-        -Destination "G:\arcsvlab-eval\win2019dcCore.iso"
+    if ((Test-Path 'G:\arcsvlab-eval\win2019dcCore.iso') -eq $false){
+        Start-BitsTransfer -Source "https://software-static.download.prss.microsoft.com/pr/download/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso" `
+            -Destination "G:\arcsvlab-eval\win2019dcCore.iso"
+    }
 
     Start-BitsTransfer -Source "https://raw.githubusercontent.com/Azure/AzureStackHCI-EvalGuide/main/deployment/dsc/azshcihost/WindowsDeploymentHelper/0.0.1/WindowsDeploymentHelper.psm1" `
         -Destination "G:\arcsvlab-eval\WindowsDeploymentHelper.psm1"
