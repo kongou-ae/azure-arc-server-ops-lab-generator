@@ -19,9 +19,12 @@ Start-Transcript -Path 'c:\arcsvlab-eval\002-configureHostVm.log'
 
 Write-Host "Installing features"
 
-Install-WindowsFeature -Name "DNS" -IncludeManagementTools
-Install-WindowsFeature -Name "DHCP" -IncludeManagementTools
-Install-WindowsFeature -Name Hyper-V -IncludeAllSubFeature -IncludeManagementTools -Restart
+$hyperV = Get-WindowsFeature -Name Hyper-V
+if($null -eq $hyperV){
+    Install-WindowsFeature -Name DNS -IncludeManagementTools
+    Install-WindowsFeature -Name DHCP -IncludeManagementTools
+    Install-WindowsFeature -Name Hyper-V -IncludeAllSubFeature -IncludeManagementTools -Restart
+}
 
 Write-Output "Setting the network of Hyper-V "
 
