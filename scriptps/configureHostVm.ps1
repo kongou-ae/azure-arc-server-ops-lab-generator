@@ -23,8 +23,6 @@ Install-WindowsFeature -Name "DNS" -IncludeManagementTools
 Install-WindowsFeature -Name "DHCP" -IncludeManagementTools
 Install-WindowsFeature -Name Hyper-V -IncludeAllSubFeature -IncludeManagementTools -Restart
 
-Restart-Computer -Force
-
 Write-Output "Setting the network of Hyper-V "
 
 New-VMSwitch -Name "InternalNAT" -SwitchType Internal
