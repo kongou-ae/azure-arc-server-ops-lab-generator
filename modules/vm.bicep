@@ -238,7 +238,7 @@ resource enableArcServerToVm 'Microsoft.Compute/virtualMachines/runCommands@2022
         value: vmLocation
       }
       {
-        name: 'resouceGroup'
+        name: 'resourceGroup'
         value: resourceGroup().name
       }
 

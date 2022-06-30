@@ -3,7 +3,6 @@ Param(
     [parameter(mandatory=$true)][string]$LocalAdministratorPassword,
     [parameter(mandatory=$true)][string]$location,
     [parameter(mandatory=$true)][string]$resourceGroup
-
 )
 
 $ErrorActionPreference = "stop"
