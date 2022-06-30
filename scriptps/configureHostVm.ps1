@@ -2,7 +2,7 @@
 
 $ErrorActionPreference = "stop"
 
-
+<#
 # Installing tools
 $chocolateyAppList = 'azure-cli,az.powershell,microsoft-edge,azcopy10,vscode,git,7zip'
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
@@ -13,6 +13,7 @@ foreach ($app in $appsToInstall)
     Write-Host "Installing $app"
     & choco install $app /y -Force | Write-Output
 }
+#>
 
 Start-Transcript -Path 'c:\arcsvlab-eval\002-configureHostVm.log' 
 
