@@ -7,16 +7,20 @@ Param(
 
 $ErrorActionPreference = "stop"
 
-Set-Item WSMan:\localhost\Client\TrustedHosts -Value "10.0.0.100" -Force
+do {
+    $result = Get-VM -Name arcWin2019sv01 -ErrorAction Ignore
+    Start-Sleep 5
+} until($result.state -eq 'Running' -and $result.status -eq "Operating normally" )
 
-$result = Get-VM -Name arcWin2019sv01 -ErrorAction Ignore
-if ( $null -ne $result){
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value "10.0.0.100" -Force
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+Install-module Az.ConnectedMachine -Force
+Login-AzAccount -Identity
+
+$result = Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $name -ErrorAction Ignore
+if ( $null -eq $result){
     $securestring = ConvertTo-SecureString -AsPlainText $LocalAdministratorPassword -Force
     $Cred = New-Object System.Management.Automation.PSCredential(".\administrator",$securestring)
     $pssession = New-PSSession 10.0.0.100 -Credential $cred
-
-    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
-    Install-module Az.ConnectedMachine -Force
-    Login-AzAccount -Identity
     Connect-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $name -Location $location -PSSession $pssession
 }
