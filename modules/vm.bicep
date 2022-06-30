@@ -6,6 +6,7 @@ param vnetId string
 param numberOfVms int = 1
 param suffix string
 param roleGuid string = newGuid()
+param now string = utcNow()
 
 resource pipVm 'Microsoft.Network/publicIPAddresses@2021-08-01' = {
   name: 'pip${suffix}'
@@ -148,8 +149,8 @@ resource mountDisk 'Microsoft.Compute/virtualMachines/runCommands@2022-03-01' = 
     source: {
       scriptUri: 'https://raw.githubusercontent.com/kongou-ae/azure-arc-server-ops-lab-generator/dev/scriptps/mountDisk.ps1'
     }
-    outputBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/mountDisk/output.txt'
-    errorBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/mountDisk/error.txt'
+    outputBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/mountDisk/${now}_output.txt'
+    errorBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/mountDisk/${now}_error.txt'
   }
 }
 
@@ -164,8 +165,8 @@ resource configureHostVm 'Microsoft.Compute/virtualMachines/runCommands@2022-03-
     source: {
       scriptUri: 'https://raw.githubusercontent.com/kongou-ae/azure-arc-server-ops-lab-generator/dev/scriptps/configureHostVm.ps1'
     }
-    outputBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/configureHostVm/output.txt'
-    errorBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/configureHostVm/error.txt'
+    outputBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/configureHostVm/${now}_output.txt'
+    errorBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/configureHostVm/${now}_error.txt'
     timeoutInSeconds: 600
   }
 }
@@ -181,8 +182,8 @@ resource settingFeaturesHostVm 'Microsoft.Compute/virtualMachines/runCommands@20
     source: {
       scriptUri: 'https://raw.githubusercontent.com/kongou-ae/azure-arc-server-ops-lab-generator/dev/scriptps/settingFeaturesHostVm.ps1'
     }
-    outputBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/settingFeaturesHostVm/output.txt'
-    errorBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/settingFeaturesHostVm/error.txt'
+    outputBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/settingFeaturesHostVm/${now}_output.txt'
+    errorBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/settingFeaturesHostVm/${now}_error.txt'
     timeoutInSeconds: 600
   }
 }
@@ -210,8 +211,8 @@ resource createWin2019Vm 'Microsoft.Compute/virtualMachines/runCommands@2022-03-
         value: adminPassword
       }
     ]
-    outputBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/createWin2019Vm/output.txt'
-    errorBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/createWin2019Vm/error.txt'
+    outputBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/createWin2019Vm/${now}_output.txt'
+    errorBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/createWin2019Vm/${now}_error.txt'
     timeoutInSeconds: 3600
   }
 }
@@ -242,8 +243,8 @@ resource enableArcServerToVm 'Microsoft.Compute/virtualMachines/runCommands@2022
       }
 
     ]
-    outputBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/enableArcServerToVm/output.txt'
-    errorBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/enableArcServerToVm/error.txt'
+    outputBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/enableArcServerToVm/${now}_output.txt'
+    errorBlobUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}/run/enableArcServerToVm/${now}_error.txt'
     protectedParameters: [
       {
         name: 'LocalAdministratorPassword'
