@@ -1,18 +1,18 @@
 Param( 
-    [parameter(mandatory=$true)][string]$name, 
-    [parameter(mandatory=$true)][string]$LocalAdministratorPassword
+    [parameter(mandatory = $true)][string]$name, 
+    [parameter(mandatory = $true)][string]$LocalAdministratorPassword
 )
 
 $ErrorActionPreference = "stop"
 
-if ((Test-Path 'G:\arcsvlab-eval') -eq $false){
+if ((Test-Path 'G:\arcsvlab-eval') -eq $false) {
     New-Item "G:\arcsvlab-eval" -ItemType Directory 
 }
 
 $result = Get-VM -Name arcWin2019sv01 -ErrorAction Ignore
-if ( $null -eq $result){
+if ( $null -eq $result) {
 
-    if ((Test-Path 'G:\arcsvlab-eval\win2019dcCore.iso') -eq $false){
+    if ((Test-Path 'G:\arcsvlab-eval\win2019dcCore.iso') -eq $false) {
         Start-BitsTransfer -Source "https://software-static.download.prss.microsoft.com/pr/download/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso" `
             -Destination "G:\arcsvlab-eval\win2019dcCore.iso"
     }

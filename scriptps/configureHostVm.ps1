@@ -7,8 +7,7 @@ $chocolateyAppList = 'azure-cli,az.powershell'
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 $appsToInstall = $chocolateyAppList -split "," | ForEach-Object { "$($_.Trim())" }
 
-foreach ($app in $appsToInstall)
-{
+foreach ($app in $appsToInstall) {
     Write-Host "Installing $app"
     & choco install $app /y -Force
 }
@@ -16,7 +15,7 @@ foreach ($app in $appsToInstall)
 Write-Host "Installing features"
 
 $hyperV = Get-WindowsFeature -Name Hyper-V
-if($false -eq $hyperV.Installed){
+if ($false -eq $hyperV.Installed) {
     Install-WindowsFeature -Name DNS -IncludeManagementTools
     Install-WindowsFeature -Name DHCP -IncludeManagementTools
     Install-WindowsFeature -Name Hyper-V -IncludeAllSubFeature -IncludeManagementTools -Restart
