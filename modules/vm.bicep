@@ -90,7 +90,7 @@ resource archost01 'Microsoft.Compute/virtualMachines@2021-11-01' = {
   }
   properties: {
     osProfile: {
-      computerName: 'mmaWinVm01'
+      computerName: 'archost01'
       adminUsername: adminUserName
       adminPassword: adminPassword
       windowsConfiguration: {
