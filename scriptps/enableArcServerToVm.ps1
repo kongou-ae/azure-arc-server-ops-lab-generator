@@ -8,7 +8,7 @@ Param(
 
 )
 
-Start-Transcript -Path 'c:\arcsvlab-eval\Bootstrap.log' -Append
+Start-Transcript -Path 'c:\arcsvlab-eval\enableArcServerToVm.log'
 
 Set-Item WSMan:\localhost\Client\TrustedHosts -Value "10.0.0.100"  -Force
 

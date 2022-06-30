@@ -160,7 +160,7 @@ resource configureHostVm 'Microsoft.Compute/virtualMachines/runCommands@2022-03-
     source: {
       scriptUri: 'https://raw.githubusercontent.com/kongou-ae/azure-arc-server-ops-lab-generator/dev/scriptps/configureHostVm.ps1'
     }
-    timeoutInSeconds: 300
+    timeoutInSeconds: 600
   }
 }
 

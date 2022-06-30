@@ -1,6 +1,6 @@
 $ErrorActionPreference = "stop"
 
-Start-Transcript -Path 'c:\arcsvlab-eval\Bootstrap.log'
+Start-Transcript -Path 'c:\arcsvlab-eval\001-mountDisk.log'
 
 $disk = Get-Disk | Where-Object {$_.PartitionStyle -eq "RAW" } 
 $disk |

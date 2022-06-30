@@ -5,7 +5,7 @@ Param(
     [parameter(mandatory=$true)][securestring]$LocalAdministratorPassword
 )
 
-Start-Transcript -Path 'c:\arcsvlab-eval\Bootstrap.log' -Append
+Start-Transcript -Path 'c:\arcsvlab-eval\createWin2019Vm.log'
 
 New-Item "G:\arcsvlab-eval" -ItemType Directory
 

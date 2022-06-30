@@ -14,7 +14,7 @@ foreach ($app in $appsToInstall)
     & choco install $app /y -Force | Write-Output
 }
 
-Start-Transcript -Path 'c:\arcsvlab-eval\Bootstrap.log' -Append
+Start-Transcript -Path 'c:\arcsvlab-eval\002-configureHostVm.log' 
 
 Write-Host "Installing features"
 
