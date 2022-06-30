@@ -41,20 +41,27 @@ resource nicForVm 'Microsoft.Network/networkInterfaces@2021-08-01' = [for i in r
   }
 }]
 
+resource bootDiagStorage 'Microsoft.Storage/storageAccounts@2021-09-01' = {
+  kind: 'StorageV2'
+  location: vmLocation
+  name: 'archostdiagsta${take(guid(subscription().subscriptionId), 4)}'
+  sku: {
+    name: 'Standard_LRS'
+  }
+}
+
 resource dataDisk 'Microsoft.Compute/disks@2022-03-02' = {
   name: 'disk${suffix}-data01'
   location: vmLocation
   sku: {
-    name: 'StandardSSD_LRS'
+    name: 'Premium_LRS'
   }
   properties: {
     diskSizeGB: 64
     creationData: {
       createOption: 'Empty'
-
     }
   }
-
 }
 
 resource archost01 'Microsoft.Compute/virtualMachines@2021-11-01' = {
@@ -75,7 +82,7 @@ resource archost01 'Microsoft.Compute/virtualMachines@2021-11-01' = {
       }
     }
     hardwareProfile: {
-      vmSize: 'Standard_D2_v4'
+      vmSize: 'Standard_D4s_v4'
     }
     storageProfile: {
       osDisk: {
@@ -91,7 +98,7 @@ resource archost01 'Microsoft.Compute/virtualMachines@2021-11-01' = {
           caching: 'ReadOnly'
           createOption: 'Attach'
           managedDisk: {
-             id: dataDisk.id
+            id: dataDisk.id
           }
         }
       ]
@@ -100,6 +107,12 @@ resource archost01 'Microsoft.Compute/virtualMachines@2021-11-01' = {
         offer: 'WindowsServer'
         sku: '2019-datacenter-core-smalldisk-g2'
         version: 'latest'
+      }
+    }
+    diagnosticsProfile: {
+      bootDiagnostics: {
+        enabled: true
+        storageUri: 'https://${bootDiagStorage.name}.blob.${environment().suffixes.storage}'
       }
     }
     networkProfile: {
@@ -115,15 +128,25 @@ resource archost01 'Microsoft.Compute/virtualMachines@2021-11-01' = {
   }
 }
 
+resource ownerRole 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
+  name: guid(subscription().subscriptionId)
+  properties: {
+    principalType: 'ServicePrincipal'
+    principalId: archost01.identity.principalId
+    roleDefinitionId: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635'
+    
+  }
+}
+
 resource mountDisk 'Microsoft.Compute/virtualMachines/runCommands@2022-03-01' = {
   name: 'mountDisk'
   parent: archost01
   location: vmLocation
-   properties: {
-      source: {
-        scriptUri: 'https://raw.githubusercontent.com/kongou-ae/azure-arc-server-ops-lab-generator/dev/scriptps/mountDisk.ps1'
-      }
-   }
+  properties: {
+    source: {
+      scriptUri: 'https://raw.githubusercontent.com/kongou-ae/azure-arc-server-ops-lab-generator/dev/scriptps/mountDisk.ps1'
+    }
+  }
 }
 
 resource configureHostVm 'Microsoft.Compute/virtualMachines/runCommands@2022-03-01' = {
@@ -133,10 +156,84 @@ resource configureHostVm 'Microsoft.Compute/virtualMachines/runCommands@2022-03-
     mountDisk
   ]
   location: vmLocation
-   properties: {
-      source: {
-        scriptUri: 'https://raw.githubusercontent.com/kongou-ae/azure-arc-server-ops-lab-generator/dev/scriptps/configureHostVm.ps1'
+  properties: {
+    source: {
+      scriptUri: 'https://raw.githubusercontent.com/kongou-ae/azure-arc-server-ops-lab-generator/dev/scriptps/configureHostVm.ps1'
+    }
+    timeoutInSeconds: 300
+  }
+}
+
+resource createWin2019Vm 'Microsoft.Compute/virtualMachines/runCommands@2022-03-01' = {
+  name: 'createWin2019Vm'
+  parent: archost01
+  dependsOn: [
+    configureHostVm
+  ]
+  location: vmLocation
+  properties: {
+    source: {
+      scriptUri: 'https://raw.githubusercontent.com/kongou-ae/azure-arc-server-ops-lab-generator/dev/scriptps/createWin2019Vm.ps1'
+    }
+    parameters: [
+      {
+        name: 'name'
+        value: archost01.properties.osProfile.computerName
       }
-      timeoutInSeconds: 300
-   }
+      {
+        name: 'location'
+        value: vmLocation
+      }
+      {
+        name: 'resouceGroup'
+        value: resourceGroup().name
+      }
+
+    ]
+    protectedParameters: [
+      {
+        name: 'LocalAdministratorPassword'
+        value: adminPassword
+      }
+    ]
+    timeoutInSeconds: 3600
+  }
+}
+
+
+
+resource enableArcServerToVm 'Microsoft.Compute/virtualMachines/runCommands@2022-03-01' = {
+  name: 'enableArcServerToVm'
+  parent: archost01
+  dependsOn: [
+    createWin2019Vm
+  ]
+  location: vmLocation
+  properties: {
+    source: {
+      scriptUri: 'https://raw.githubusercontent.com/kongou-ae/azure-arc-server-ops-lab-generator/dev/scriptps/enableArcServerToVm.ps1'
+    }
+    parameters: [
+      {
+        name: 'name'
+        value: archost01.properties.osProfile.computerName
+      }
+      {
+        name: 'location'
+        value: vmLocation
+      }
+      {
+        name: 'resouceGroup'
+        value: resourceGroup().name
+      }
+
+    ]
+    protectedParameters: [
+      {
+        name: 'LocalAdministratorPassword'
+        value: adminPassword
+      }
+    ]
+    timeoutInSeconds: 300
+  }
 }

@@ -1,7 +1,7 @@
 # Ref: https://github.com/microsoft/azure_arc/blob/main/azure_jumpstart_arcbox/artifacts/Bootstrap.ps1
 
 $ErrorActionPreference = "stop"
-Start-Transcript -Path 'c:\Bootstrap.log' -append
+New-Item 'c:\arcsvlab-eval' -ItemType Directory
 
 # Installing tools
 $chocolateyAppList = 'azure-cli,az.powershell,microsoft-edge,azcopy10,vscode,git,7zip'
@@ -14,12 +14,15 @@ foreach ($app in $appsToInstall)
     & choco install $app /y -Force | Write-Output
 }
 
+Start-Transcript -Path 'c:\arcsvlab-eval\Bootstrap.log' -Append
 
 Write-Host "Installing features"
 
 Install-WindowsFeature -Name "DNS" -IncludeManagementTools
 Install-WindowsFeature -Name "DHCP" -IncludeManagementTools
 Install-WindowsFeature -Name Hyper-V -IncludeAllSubFeature -IncludeManagementTools -Restart
+
+Restart-Computer -Force
 
 Write-Output "Setting the network of Hyper-V "
 
@@ -36,3 +39,5 @@ Set-DhcpServerv4OptionValue -DnsServer 10.0.0.254
 Write-Output "Setting DNS"
 
 Add-DnsServerForwarder -IPAddress 168.63.129.16
+
+Stop-Transcript
