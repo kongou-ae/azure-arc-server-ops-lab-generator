@@ -15,6 +15,7 @@ if ( $null -ne $result){
     $Cred = New-Object System.Management.Automation.PSCredential(".\administrator",$securestring)
     $pssession = New-PSSession 10.0.0.100 -Credential $cred
 
+    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
     Install-module Az.ConnectedMachine -Force
     Login-AzAccount -Identity
     Connect-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $name -Location $location -PSSession $pssession
