@@ -41,4 +41,10 @@ if ( $null -eq $result) {
         -Generation 2 -Switch "InternalNAT"
 
     Start-vm arcWin2019sv01
+
+    do {
+        $result = Get-VM -Name arcWin2019sv01 -ErrorAction Ignore
+        Start-Sleep 5
+    } until($result.state -eq 'Running' -and $result.status -eq "Operating normally" )
+    
 }

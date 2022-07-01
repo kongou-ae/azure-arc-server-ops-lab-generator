@@ -7,11 +7,6 @@ Param(
 
 $ErrorActionPreference = "stop"
 
-do {
-    $result = Get-VM -Name arcWin2019sv01 -ErrorAction Ignore
-    Start-Sleep 5
-} until($result.state -eq 'Running' -and $result.status -eq "Operating normally" )
-
 Set-Item WSMan:\localhost\Client\TrustedHosts -Value "10.0.0.100" -Force
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 Install-module Az.ConnectedMachine -Force
